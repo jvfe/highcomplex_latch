@@ -26,6 +26,7 @@ metadata.parameters = {
     "sample_name": LatchParameter(
         display_name="Sample name",
         description="Sample name (will define output file names)",
+        batch_table_column=True,  # Show this parameter in batched mode.
     ),
     "contaminants": LatchParameter(
         display_name="Contaminants", description="FASTA file with contaminant sequences"

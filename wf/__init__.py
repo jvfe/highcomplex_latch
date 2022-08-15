@@ -1,5 +1,5 @@
 """
-Assemble and sort some COVID reads...
+Low complexity filtering for reads
 """
 
 import subprocess
@@ -22,23 +22,17 @@ def bbduk(
 
     _bbduk_cmd = [
         "bbduk.sh",
-        "in1=",
-        read1.local_path,
-        "in2=",
-        read2.local_path,
-        "out1=",
-        f"{sample_name}_1_filtered.fastq",
-        "out2=",
-        f"{sample_name}_2_filtered.fastq",
-        "threads=",
-        "31",
+        f"in1={read1.local_path}",
+        f"in2={read2.local_path}",
+        f"out1={sample_name}_1_filtered.fastq",
+        f"out2={sample_name}_2_filtered.fastq",
+        "threads=31",
     ]
 
     if contaminants is not None:
         _bbduk_cmd.extend(
             [
-                "ref=",
-                contaminants.local_path,
+                f"ref={contaminants.local_path}",
             ]
         )
 
@@ -48,7 +42,7 @@ def bbduk(
 
 
 @workflow(metadata)
-def assemble_and_sort(
+def highcomplexity(
     read1: LatchFile,
     read2: LatchFile,
     sample_name: str = "BBDuk_Sample",
@@ -75,7 +69,7 @@ def assemble_and_sort(
 
 
 LaunchPlan(
-    assemble_and_sort,
+    highcomplexity,
     "Crohn's disease gut microbiome (SRR579292)",
     {
         "read1": LatchFile("s3://latch-public/test-data/4318/SRR579292_1.fastq"),
