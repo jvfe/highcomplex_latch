@@ -66,8 +66,8 @@ def bbduk(
     message(
         "info",
         {
-            "title": "bbduk",
-            "body": f"Executing bbduk {version}\nCommand: {running_cmd}",
+            "title": f"Executing bbduk {version}",
+            "body": running_cmd,
         },
     )
 
