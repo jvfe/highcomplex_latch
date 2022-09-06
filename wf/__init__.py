@@ -43,7 +43,7 @@ def bbduk(
     contaminants: Optional[LatchFile],
 ) -> LatchDir:
 
-    output_dir_name = "bbduk_outputs"
+    output_dir_name = f"{sample_name}_bbduk_outputs"
     output_dir = Path(output_dir_name).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -97,7 +97,7 @@ def highcomplexity(
     read2: LatchFile,
     sample_name: str = "BBDuk_Sample",
     contaminants: Optional[LatchFile] = None,
-) -> List[LatchFile]:
+) -> LatchDir:
     """Low complexity read filtering
 
     HighComplexity
