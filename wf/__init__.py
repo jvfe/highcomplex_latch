@@ -4,11 +4,12 @@ Low complexity filtering for reads
 
 import re
 import subprocess
+from pathlib import Path
 from typing import List, Optional, Tuple
 
 from latch import message, small_task, workflow
 from latch.resources.launch_plan import LaunchPlan
-from latch.types import LatchFile, file_glob
+from latch.types import LatchDir, LatchFile
 
 from .docs import metadata
 
@@ -40,14 +41,18 @@ def bbduk(
     read2: LatchFile,
     sample_name: str,
     contaminants: Optional[LatchFile],
-) -> List[LatchFile]:
+) -> LatchDir:
+
+    output_dir_name = "bbduk_outputs"
+    output_dir = Path(output_dir_name).resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     _bbduk_cmd = [
         "bbduk.sh",
         f"in1={read1.local_path}",
         f"in2={read2.local_path}",
-        f"out1={sample_name}_1_filtered.fastq",
-        f"out2={sample_name}_2_filtered.fastq",
+        f"out1={str(output_dir)}/{sample_name}_1_filtered.fastq",
+        f"out2={str(output_dir)}/{sample_name}_2_filtered.fastq",
         "threads=31",
     ]
 
@@ -83,7 +88,7 @@ def bbduk(
             )
         raise RuntimeError
 
-    return file_glob("*filtered.fastq", "latch:///bbduk_outputs/")
+    return LatchDir(str(output_dir), f"latch:///{output_dir_name}/")
 
 
 @workflow(metadata)
