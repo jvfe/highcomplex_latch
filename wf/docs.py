@@ -9,6 +9,7 @@ metadata = LatchMetadata(
     ),
     repository="https://github.com/jvfe/highcomplex_latch",
     license="MIT",
+    tags=["NGS", "filtering", "trimming"]
 )
 
 metadata.parameters = {
